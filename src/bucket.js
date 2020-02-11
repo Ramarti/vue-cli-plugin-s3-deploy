@@ -96,10 +96,13 @@ class Bucket {
     } else {
       uploadParams.CacheControl = this.options.cacheControl;
     }
-
-    if (uploadOptions.gzip) {
+    console.log(uploadFileKey)
+    if (uploadOptions.gzip || uploadFileKey.endsWith('.gz')) {
       uploadParams.ContentEncoding = 'gzip'
+    } else if (uploadFileKey.endsWith('.br')) {
+      uploadParams.ContentEncoding = 'br'
     }
+    console.log(uploadParams)
 
     return this.connection.upload(
       uploadParams,
@@ -108,7 +111,9 @@ class Bucket {
   }
 
   contentTypeFor (filename) {
-    return mime.lookup(filename) || 'application/octet-stream'
+    let lookup = filename.replace(/\.((br)|(gz))/,'')
+    console.log(mime.lookup(lookup))
+    return mime.lookup(lookup) || 'application/octet-stream'
   }
 
 }
