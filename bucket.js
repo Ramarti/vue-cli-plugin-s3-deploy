@@ -3,13 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _cliSharedUtils = require("@vue/cli-shared-utils");
 
 var _mimeTypes = _interopRequireDefault(require("mime-types"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -234,8 +234,12 @@ function () {
         uploadParams.CacheControl = this.options.cacheControl;
       }
 
-      if (uploadOptions.gzip) {
+      console.log(uploadFileKey);
+
+      if (uploadOptions.gzip || uploadFileKey.endsWith('gz')) {
         uploadParams.ContentEncoding = 'gzip';
+      } else if (uploadFileKey.endsWith('br')) {
+        uploadParams.ContentEncoding = 'br';
       }
 
       return this.connection.upload(uploadParams, {
@@ -246,7 +250,9 @@ function () {
   }, {
     key: "contentTypeFor",
     value: function contentTypeFor(filename) {
-      return _mimeTypes["default"].lookup(filename) || 'application/octet-stream';
+      var lookup = filename.replace(/\.((br)|(gz))/, '');
+      console.log(_mimeTypes.default.lookup(lookup));
+      return _mimeTypes.default.lookup(lookup) || 'application/octet-stream';
     }
   }]);
 
@@ -254,4 +260,4 @@ function () {
 }();
 
 var _default = Bucket;
-exports["default"] = _default;
+exports.default = _default;
