@@ -1,5 +1,5 @@
 import { snakeCase } from 'lodash';
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import { join } from 'path';
 
 const VERSION = '4.0.0-rc2'
